@@ -33,7 +33,10 @@ for index, link in enumerate(links, start=1):
         if extractedLink == None:
             continue
         extractedLink = link + extractedLink
-        ShallowExtractedLinks.append(extractedLink)
+        if re.search("\.nkit\.gcz", extractedLink, re.IGNORECASE):
+            DeepExtractedLinks.append(extractedLink)
+        else:
+            ShallowExtractedLinks.append(extractedLink)
 
 print("[+] Shallow Extraction Complete!")
 print("[+] Saving Progress...")
@@ -43,6 +46,7 @@ for link in ShallowExtractedLinks:
 f.close()
 print("[+] Progress saved.")
 print("[+] Starting Deep Extraction...")
+f = open("deepextract.txt", "w")
 for index, link in enumerate(ShallowExtractedLinks, start=1):
     print("[+] Deep Extraction: " + str(index) +
           " of " + str(len(ShallowExtractedLinks)))
@@ -58,12 +62,9 @@ for index, link in enumerate(ShallowExtractedLinks, start=1):
         extractedLink = link + extractedLink
         print("Added: " + extractedLink)
         DeepExtractedLinks.append(extractedLink)
-
+        f.write(extractedLink + "\n")
 print("[+] Deep Extraction Complete!")
 print("[+] Saving Progress...")
-f = open("deepextract.txt", "w")
-for link in ShallowExtractedLinks:
-    f.write(link + "\n")
 f.close()
 print("[+] Progress saved.")
 print("[+] Done!")
